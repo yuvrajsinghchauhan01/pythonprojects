@@ -1,6 +1,3 @@
-import random
-import string
-
 print('''
  _                                             
 | |                                            
@@ -12,50 +9,41 @@ print('''
                    |___/                       
 
 ''')
+      #import random module
+import random
 
-
-def import_words():
-    # randomly chooses something from the list
-    words = random.choice(open('gistfile1.txt').readlines())
-    if '\n' in words:
-        words = words.replace('\n',"")
-    print(words)
-
-    return words.upper()
-
-
-def hangman():
-    word = import_words()
-    word_letters = set(word)  # letters in the word
-    alphabet = set(string.ascii_uppercase)
-    used_letters = set()  # what the user has guessed
-    lives = 6
-
-#     # getting user input
-    while len(word_letters) >0 and lives > 0:
-        #letters used
-        print('You have', lives, 'lives left and You have used these letters: ', " ".join(used_letters))
-
-        # what current word is i.e (F__B_E == FEEBLE)
-        word_list = [letter if letter in used_letters else '-' for letter in word]
-        print('Current word: ',' '.join(word_list))
-        user_letter = input("Guess a letter: ").upper()
-        if user_letter in alphabet - used_letters:
-            used_letters.add(user_letter)
-            if user_letter in word_letters:
-                word_letters.remove(user_letter)
-            else:
-                lives -= 1  # takes away a life if wrong
-                print('Letter is not in word.')
-        elif user_letter in used_letters:
-            print("You have already used that character. Please try again.")
-        else:
-            print('Invalid character. Please try again')
-
-# while the length of words getter than 0 iterate and lives getter than 0
-    if lives == 0:
-        print('''
-        
+#Create a word list of your choice
+word_list = ['ardverk', 'baboon', 'camel', 'gorrila', 'hero', 'productive',
+             'smart', 'focus', 'meditation', 'calm', 'wealth', 'skillful',
+             'polymath', 'revise', 'learn', 'neverbackdown', 'leader', 'healthy']
+#define a variable containting random word
+choosen_word = random.choice(word_list)
+#create an empty list
+display = []
+# ADD '_' in till length of the word
+for letter in choosen_word:
+    display.append('_')
+print(display)
+#Variable contain lives of player
+lives = 6
+#Run the loop till all length of word.
+while lives > 0:
+    user_guess = input('Enter a letter: ').lower()
+    for position in range(len(choosen_word)):
+        letter = choosen_word[position]
+        if letter == user_guess:
+            display[position] = letter
+    print(display)
+    #if the player guess is not correct 1 live will taken away....
+    if user_guess not in choosen_word:
+        lives -= 1
+        print(f'You have {lives} lives now')
+#if '_' not in list that means you won else you lost...
+if '_' not in display:
+    print('YOU WON!!!!!!')
+else:
+    print('''
+    
  ___________.._______
 | .__________))______|
 | | / /      ||
@@ -80,8 +68,6 @@ def hangman():
 : :         \ \       : :  
 . .          `'       . .
 
-        ''')
-        print(f'You died, sorry. The word was {word}')
-    else:
-        print(f"yay boi, You guessed the word {word}!!")
-hangman()
+
+    ''')
+    print('GAME OVER :(')
